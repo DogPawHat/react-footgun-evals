@@ -1,16 +1,18 @@
 {
   "name": "react-footgun-evals",
   "version": "1.0.0",
-  "description": "",
+  "description": "Evaluation project for React footguns",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "eval:dev": "evalite dev"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@ai-sdk/openai": "^1.1.9",
     "@types/node": "^22.13.0",
+    "ai": "^4.1.17",
     "autoevals": "^0.0.119",
     "evalite": "^0.8.3",
     "vitest": "^3.0.5"

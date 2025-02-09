@@ -23,7 +23,8 @@
     "lib": ["es2022", "dom", "dom.iterable"],
     "jsx": "react-jsx",
     "paths": {
-      "~/*": ["./app/*"]
+      "~/app/*": ["./app/*"],
+      "~/convex/*": ["./convex/*"]
     }
   }
 }

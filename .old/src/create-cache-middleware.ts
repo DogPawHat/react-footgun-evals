@@ -15,7 +15,7 @@ const createKey = (params: LanguageModelV1CallOptions, modelId: string) => {
 };
 
 export const createCacheMiddleware = (
-  storage: Storage
+  storage: Storage,
 ): LanguageModelV1Middleware => ({
   wrapGenerate: async ({ model, doGenerate, params }) => {
     const cacheKey = createKey(params, model.modelId);
@@ -67,7 +67,7 @@ export const createCacheMiddleware = (
               usage: { ...p.usage, promptTokens: 0, completionTokens: 0 },
             };
           } else return p;
-        }
+        },
       );
       return {
         stream: simulateReadableStream({

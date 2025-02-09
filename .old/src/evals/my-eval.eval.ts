@@ -42,7 +42,7 @@ for (const modelId of openAiModelIds) {
           wrapLanguageModel({
             model: openai(modelId),
             middleware: createCacheMiddleware(storage),
-          })
+          }),
         ),
         prompt: input,
       });
@@ -66,7 +66,7 @@ for (const modelId of anthropicModelIds) {
           wrapLanguageModel({
             model: anthropic(modelId),
             middleware: createCacheMiddleware(storage),
-          })
+          }),
         ),
         prompt: input,
       });

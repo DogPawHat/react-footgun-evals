@@ -1,7 +1,3 @@
-import { defineConfig } from "vitest/config";
+import { defineConfig } from "vite";
 
-export default defineConfig({
-  test: {
-    setupFiles: ["dotenv/config"],
-  },
-});
+export default defineConfig({});

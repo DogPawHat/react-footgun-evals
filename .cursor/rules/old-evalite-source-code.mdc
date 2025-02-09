@@ -1,0 +1,11 @@
+---
+description: How to handle the code in .old
+globs: .old/**
+---
+
+The files in .old are from the old evalite suite and won't work with the new custom approach of the react-footgun-evals service. They will NOT be part of the app going foward
+
+The code in `.old/src/evals` will be used as reference for new evals going forward
+
+Do not include any code from `.old` in imports
+Do not modify, delete or add any code from `.old`

@@ -1,35 +1,27 @@
-import { useSuspenseQuery } from "@tanstack/react-query";
 import { Link, createFileRoute } from "@tanstack/react-router";
-import { convexQuery } from "@convex-dev/react-query";
-import { api } from "~/convex/_generated/api";
-import { Loader } from "~/app/components/Loader";
 
 export const Route = createFileRoute("/")({
-  component: Home,
-  pendingComponent: () => <Loader />,
+  component: Index,
 });
 
-function Home() {
-  const boardsQuery = useSuspenseQuery(convexQuery(api.board.getBoards, {}));
-
+function Index() {
   return (
-    <div className="p-8 space-y-2">
-      <h1 className="text-2xl font-black">Boards</h1>
-      <ul className="flex flex-wrap list-disc">
-        {boardsQuery.data.map((board) => (
-          <li key={board.id} className="ml-4">
-            <Link
-              to="/boards/$boardId"
-              params={{
-                boardId: board.id,
-              }}
-              className="font-bold text-blue-500"
-            >
-              {board.name}
-            </Link>
-          </li>
-        ))}
-      </ul>
+    <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+      <h1 className="text-3xl font-bold text-gray-900">
+        React Concept Evaluation
+      </h1>
+      <p className="mt-4 text-lg text-gray-500">
+        Welcome to the React Concept Evaluation platform. This tool helps
+        evaluate how well different LLMs explain React concepts to beginners.
+      </p>
+      <div className="mt-8">
+        <Link
+          to="/dashboard"
+          className="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+        >
+          View Dashboard
+        </Link>
+      </div>
     </div>
   );
 }

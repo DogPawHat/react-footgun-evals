@@ -1,78 +1,57 @@
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools/production";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import {
   Link,
   Outlet,
   createRootRouteWithContext,
-  useRouterState,
 } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/router-devtools";
 import { Meta, Scripts } from "@tanstack/start";
-import * as React from "react";
-import { Toaster } from "react-hot-toast";
 import type { QueryClient } from "@tanstack/react-query";
-import { DefaultCatchBoundary } from "~/app/components/DefaultCatchBoundary";
-import { IconLink } from "~/app/components/IconLink";
-import { NotFound } from "~/app/components/NotFound";
-import appCss from "~/app/styles/app.css?url";
-import { seo } from "~/app/utils/seo";
-import { Loader } from "~/app/components/Loader";
+import * as React from "react";
+import "../styles/app.css";
 
 export const Route = createRootRouteWithContext<{
   queryClient: QueryClient;
 }>()({
-  head: () => ({
-    meta: [
-      {
-        charSet: "utf-8",
-      },
-      {
-        name: "viewport",
-        content: "width=device-width, initial-scale=1",
-      },
-      ...seo({
-        title:
-          "TanStack Start | Type-Safe, Client-First, Full-Stack React Framework",
-        description: `TanStack Start is a type-safe, client-first, full-stack React framework. `,
-      }),
-    ],
-    links: [
-      { rel: "stylesheet", href: appCss },
-      {
-        rel: "apple-touch-icon",
-        sizes: "180x180",
-        href: "/apple-touch-icon.png",
-      },
-      {
-        rel: "icon",
-        type: "image/png",
-        sizes: "32x32",
-        href: "/favicon-32x32.png",
-      },
-      {
-        rel: "icon",
-        type: "image/png",
-        sizes: "16x16",
-        href: "/favicon-16x16.png",
-      },
-      { rel: "manifest", href: "/site.webmanifest", color: "#fffff" },
-      { rel: "icon", href: "/favicon.ico" },
-    ],
-  }),
-  errorComponent: (props) => {
-    return (
-      <RootDocument>
-        <DefaultCatchBoundary {...props} />
-      </RootDocument>
-    );
-  },
-  notFoundComponent: () => <NotFound />,
   component: RootComponent,
 });
 
 function RootComponent() {
   return (
     <RootDocument>
-      <Outlet />
+      <div className="min-h-screen">
+        {/* Navigation */}
+        <nav className="bg-gray-800">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="flex h-16 items-center justify-between">
+              <div className="flex items-center">
+                <div className="flex-shrink-0">
+                  <span className="text-white text-xl font-bold">
+                    React Footgun Evals
+                  </span>
+                </div>
+                <div className="ml-10 flex items-baseline space-x-4">
+                  <Link
+                    to="/"
+                    className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                  >
+                    Home
+                  </Link>
+                  <Link
+                    to="/dashboard"
+                    className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                  >
+                    Dashboard
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
+        </nav>
+
+        {/* Page Content */}
+        <Outlet />
+      </div>
     </RootDocument>
   );
 }
@@ -82,73 +61,15 @@ function RootDocument({ children }: { children: React.ReactNode }) {
     <html>
       <head>
         <Meta />
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
       </head>
       <body>
-        <div className="h-screen flex flex-col min-h-0">
-          <div className="bg-slate-900 border-b border-slate-800 flex items-center justify-between py-4 px-8 box-border">
-            <div className="flex items-center gap-4">
-              <div>
-                <Link to="/" className="block leading-tight">
-                  <div className="font-black text-2xl text-white">Trellaux</div>
-                  <div className="text-slate-500">a TanStack Demo</div>
-                </Link>
-              </div>
-              <LoadingIndicator />
-            </div>
-            <div className="flex items-center gap-6">
-              {/* <label
-                htmlFor="countries"
-                className="block text-sm font-medium text-gray-900 dark:text-white"
-              >
-                Delay
-              </label>
-              <select
-                className="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                onChange={(event) => {
-                  // setExtraDelay(Number(event.currentTarget.value))
-                }}
-                defaultValue="0"
-              >
-                <option value="0">None</option>
-                <option value="100">100</option>
-                <option value="500">500</option>
-                <option value="2000">2000</option>
-              </select> */}
-              <IconLink
-                href="https://github.com/TanStack/router/tree/main/examples/react/start-trellaux"
-                label="Source"
-                icon="/github-mark-white.png"
-              />
-              <IconLink
-                href="https://tanstack.com"
-                icon="/tanstack.png"
-                label="TanStack"
-              />
-            </div>
-          </div>
-
-          <div className="flex-grow min-h-0 h-full flex flex-col">
-            {children}
-            <Toaster />
-          </div>
-        </div>
+        {children}
         <ReactQueryDevtools />
-        <TanStackRouterDevtools position="bottom-right" />
+        <TanStackRouterDevtools />
         <Scripts />
       </body>
     </html>
-  );
-}
-
-function LoadingIndicator() {
-  const isLoading = useRouterState({ select: (s) => s.isLoading });
-  return (
-    <div
-      className={`h-12 transition-all duration-300 ${
-        isLoading ? `opacity-100 delay-300` : `opacity-0 delay-0`
-      }`}
-    >
-      <Loader />
-    </div>
   );
 }

@@ -1,44 +1,36 @@
 import { defineSchema, defineTable } from "convex/server";
-import { type Infer, v } from "convex/values";
+import { v } from "convex/values";
 
 const schema = defineSchema({
   runs: defineTable({
-    runType: v.string(), // full, partial
-  }).index("by_runType", ["runType"]), // Added an index for runType
+    runType: v.literal("cron"),
+  }).index("by_run_type", ["runType"]), // Added an index for runType
 
   evals: defineTable({
-    run_id: v.id("runs"),
+    runId: v.id("runs"),
     name: v.string(),
-    filepath: v.string(),
-    duration: v.number(),
-  }).index("by_run_id", ["run_id"]), // Added an index for run_id
+  }).index("by_run_id", ["runId"]), // Added an index for run_id
 
-  results: defineTable({
-    eval_id: v.id("evals"),
-    duration: v.number(),
-    input: v.string(), // JSON
-    output: v.string(), // JSON
-    expected: v.optional(v.string()), // JSON
-    col_order: v.number(),
-  }).index("by_eval_id", ["eval_id"]), // Added an index for eval_id
+  chatInputs: defineTable({
+    evalId: v.id("evals"),
+    modelId: v.literal("gpt-4o"),
+    input: v.string(),
+    workflowId: v.optional(v.string()),
+  }).index("by_eval_id", ["evalId"]),
+
+  chatOutputs: defineTable({
+    inputId: v.id("chatInputs"),
+    output: v.string(),
+  }).index("by_input_id", ["inputId"]),
 
   scores: defineTable({
-    result_id: v.id("results"),
+    outputId: v.id("chatOutputs"),
     name: v.string(),
-    score: v.number(),
+    scoredBy: v.literal("cra-grep"),
+    // score is a number between 0 and 1000
+    score: v.int64(),
     description: v.optional(v.string()),
     metadata: v.optional(v.string()), // JSON
-  }).index("by_result_id", ["result_id"]), // Added an index for result_id
-
-  traces: defineTable({
-    result_id: v.id("results"),
-    input: v.string(), // JSON
-    output: v.string(), // JSON
-    start_time: v.number(),
-    end_time: v.number(),
-    prompt_tokens: v.optional(v.number()),
-    completion_tokens: v.optional(v.number()),
-    col_order: v.number(),
-  }).index("by_result_id", ["result_id"]), // Added an index for result_id
+  }).index("by_output_id", ["outputId"]),
 });
 export default schema;

@@ -8,14 +8,17 @@
  * @module
  */
 
+import type * as evals from "../evals.js";
+import type * as index from "../index.js";
+import type * as inputs from "../inputs.js";
+import type * as llms from "../llms.js";
+import type * as outputs from "../outputs.js";
+
 import type {
   ApiFromModules,
   FilterApi,
   FunctionReference,
 } from "convex/server";
-import type * as dashboard from "../dashboard.js";
-import type * as llms from "../llms.js";
-
 /**
  * A utility for referencing Convex functions in your app's API.
  *
@@ -25,14 +28,247 @@ import type * as llms from "../llms.js";
  * ```
  */
 declare const fullApi: ApiFromModules<{
-  dashboard: typeof dashboard;
+  evals: typeof evals;
+  index: typeof index;
+  inputs: typeof inputs;
   llms: typeof llms;
+  outputs: typeof outputs;
 }>;
+declare const fullApiWithMounts: typeof fullApi;
+
 export declare const api: FilterApi<
-  typeof fullApi,
+  typeof fullApiWithMounts,
   FunctionReference<any, "public">
 >;
 export declare const internal: FilterApi<
-  typeof fullApi,
+  typeof fullApiWithMounts,
   FunctionReference<any, "internal">
 >;
+
+export declare const components: {
+  workflow: {
+    functions: {
+      start: FunctionReference<
+        "mutation",
+        "internal",
+        {
+          args: any;
+          functionType:
+            | { type: "query" }
+            | { type: "mutation" }
+            | { type: "action" };
+          generationNumber: number;
+          handle: string;
+          journalId: string;
+          workflowId: string;
+        },
+        null
+      >;
+    };
+    journal: {
+      load: FunctionReference<
+        "query",
+        "internal",
+        { workflowId: string },
+        Array<{
+          _creationTime: number;
+          _id: string;
+          step:
+            | {
+                args: any;
+                argsSize: number;
+                completedAt?: number;
+                functionType:
+                  | { type: "query" }
+                  | { type: "mutation" }
+                  | { recoveryId?: string; type: "action" };
+                handle: string;
+                inProgress: boolean;
+                outcome?:
+                  | { result: any; resultSize: number; type: "success" }
+                  | { error: string; type: "error" };
+                startedAt: number;
+                type: "function";
+              }
+            | {
+                deadline: number;
+                durationMs: number;
+                inProgress: boolean;
+                type: "sleep";
+              };
+          stepNumber: number;
+          workflowId: string;
+        }>
+      >;
+      pushEntry: FunctionReference<
+        "mutation",
+        "internal",
+        {
+          generationNumber: number;
+          step:
+            | {
+                args: any;
+                argsSize: number;
+                completedAt?: number;
+                functionType:
+                  | { type: "query" }
+                  | { type: "mutation" }
+                  | { recoveryId?: string; type: "action" };
+                handle: string;
+                inProgress: boolean;
+                outcome?:
+                  | { result: any; resultSize: number; type: "success" }
+                  | { error: string; type: "error" };
+                startedAt: number;
+                type: "function";
+              }
+            | {
+                deadline: number;
+                durationMs: number;
+                inProgress: boolean;
+                type: "sleep";
+              };
+          stepNumber: number;
+          workflowId: string;
+        },
+        {
+          _creationTime: number;
+          _id: string;
+          step:
+            | {
+                args: any;
+                argsSize: number;
+                completedAt?: number;
+                functionType:
+                  | { type: "query" }
+                  | { type: "mutation" }
+                  | { recoveryId?: string; type: "action" };
+                handle: string;
+                inProgress: boolean;
+                outcome?:
+                  | { result: any; resultSize: number; type: "success" }
+                  | { error: string; type: "error" };
+                startedAt: number;
+                type: "function";
+              }
+            | {
+                deadline: number;
+                durationMs: number;
+                inProgress: boolean;
+                type: "sleep";
+              };
+          stepNumber: number;
+          workflowId: string;
+        }
+      >;
+    };
+    sleep: {
+      start: FunctionReference<
+        "mutation",
+        "internal",
+        {
+          durationMs: number;
+          generationNumber: number;
+          journalId: string;
+          workflowId: string;
+        },
+        null
+      >;
+    };
+    workflow: {
+      blockedBy: FunctionReference<
+        "query",
+        "internal",
+        { workflowId: string },
+        {
+          _creationTime: number;
+          _id: string;
+          step:
+            | {
+                args: any;
+                argsSize: number;
+                completedAt?: number;
+                functionType:
+                  | { type: "query" }
+                  | { type: "mutation" }
+                  | { recoveryId?: string; type: "action" };
+                handle: string;
+                inProgress: boolean;
+                outcome?:
+                  | { result: any; resultSize: number; type: "success" }
+                  | { error: string; type: "error" };
+                startedAt: number;
+                type: "function";
+              }
+            | {
+                deadline: number;
+                durationMs: number;
+                inProgress: boolean;
+                type: "sleep";
+              };
+          stepNumber: number;
+          workflowId: string;
+        } | null
+      >;
+      cancel: FunctionReference<
+        "mutation",
+        "internal",
+        { workflowId: string },
+        null
+      >;
+      cleanup: FunctionReference<
+        "mutation",
+        "internal",
+        { workflowId: string },
+        boolean
+      >;
+      complete: FunctionReference<
+        "mutation",
+        "internal",
+        {
+          generationNumber: number;
+          now: number;
+          outcome:
+            | { result: any; resultSize: number; type: "success" }
+            | { error: string; type: "error" };
+          workflowId: string;
+        },
+        null
+      >;
+      create: FunctionReference<
+        "mutation",
+        "internal",
+        {
+          logLevel: "DEBUG" | "INFO" | "WARN" | "ERROR";
+          workflowArgs: any;
+          workflowHandle: string;
+        },
+        string
+      >;
+      load: FunctionReference<
+        "query",
+        "internal",
+        { workflowId: string },
+        {
+          _creationTime: number;
+          _id: string;
+          args: any;
+          generationNumber: number;
+          logLevel: "DEBUG" | "INFO" | "WARN" | "ERROR";
+          startedAt: number;
+          state:
+            | { type: "running" }
+            | {
+                completedAt: number;
+                outcome:
+                  | { result: any; resultSize: number; type: "success" }
+                  | { error: string; type: "error" };
+                type: "completed";
+              }
+            | { canceledAt: number; type: "canceled" };
+          workflowHandle: string;
+        }
+      >;
+    };
+  };
+};

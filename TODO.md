@@ -1,4 +1,0 @@
-- [ ] Evalite: fastify to hono/openapi
-- [ ] Evalite: react query invalidate on websocket
-- [ ] footguns: fork evalite stuff and hardcode it myself (tanstack start serversless I guess)
-- [ ] footguns: more prompts

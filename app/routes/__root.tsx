@@ -20,31 +20,29 @@ export const Route = createRootRouteWithContext<{
 function RootComponent() {
   return (
     <RootDocument>
-      <div className="flex min-h-screen flex-col bg-background">
+      <div className="@container flex min-h-screen flex-col bg-background">
         {/* Header */}
-        <header className="sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-          <div className="container flex h-16 items-center">
+        <header className="@container/header border-b bg-background py-4 flex justify-center">
+          <div className="flex items-center justify-between w-full @md/header:w-4xl @lg/header:w-7xl">
             <div className="mr-4 flex">
-              <Link to="/" className="flex items-center space-x-2">
+              <Link to="/" className="flex items-center space-2">
                 <span className="text-xl font-bold">React Footgun Evals</span>
               </Link>
             </div>
-            <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
-              <nav className="flex items-center space-x-4">
-                <Link
-                  to="/"
-                  className="text-sm font-medium transition-colors hover:text-primary"
-                >
-                  Home
-                </Link>
-                <Link
-                  to="/"
-                  className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
-                >
-                  About
-                </Link>
-              </nav>
-            </div>
+            <nav className="flex items-center space-x-4">
+              <Link
+                to="/"
+                className="text-sm font-medium transition-colors hover:text-primary"
+              >
+                Home
+              </Link>
+              <Link
+                to="/"
+                className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
+              >
+                About
+              </Link>
+            </nav>
           </div>
         </header>
 
@@ -54,27 +52,13 @@ function RootComponent() {
         </main>
 
         {/* Footer */}
-        <footer className="border-t bg-background">
-          <div className="container flex flex-col items-center justify-between gap-4 py-10 md:h-24 md:flex-row md:py-0">
+        <footer className="@container/footer border-t bg-background flex justify-center">
+          <div className="flex flex-col items-center justify-between gap-4 py-4 md:flex-row w-full @md/footer:w-4xl @lg/footer:w-7xl">
             <div className="flex flex-col items-center gap-4 px-8 md:flex-row md:gap-2 md:px-0">
               <p className="text-center text-sm leading-loose text-muted-foreground md:text-left">
-                &copy; {new Date().getFullYear()} React Footgun Evals. All
-                rights reserved.
+                &copy; {new Date().getFullYear()} Ciarán Curley. All rights
+                reserved.
               </p>
-            </div>
-            <div className="flex items-center space-x-4">
-              <Link
-                to="/"
-                className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
-              >
-                Terms
-              </Link>
-              <Link
-                to="/"
-                className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
-              >
-                Privacy
-              </Link>
             </div>
           </div>
         </footer>

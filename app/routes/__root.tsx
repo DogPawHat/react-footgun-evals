@@ -9,6 +9,7 @@ import { Meta, Scripts } from "@tanstack/start";
 import type { QueryClient } from "@tanstack/react-query";
 import * as React from "react";
 import "../styles/app.css";
+import { ThemeProvider } from "../components/theme-provider";
 
 export const Route = createRootRouteWithContext<{
   queryClient: QueryClient;
@@ -19,32 +20,64 @@ export const Route = createRootRouteWithContext<{
 function RootComponent() {
   return (
     <RootDocument>
-      <div className="min-h-screen">
-        {/* Navigation */}
-        <nav className="bg-gray-800">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="flex h-16 items-center justify-between">
-              <div className="flex items-center">
-                <div className="flex-shrink-0">
-                  <span className="text-white text-xl font-bold">
-                    React Footgun Evals
-                  </span>
-                </div>
-                <div className="ml-10 flex items-baseline space-x-4">
-                  <Link
-                    to="/"
-                    className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
-                  >
-                    Home
-                  </Link>
-                </div>
-              </div>
+      <div className="flex min-h-screen flex-col bg-background">
+        {/* Header */}
+        <header className="sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+          <div className="container flex h-16 items-center">
+            <div className="mr-4 flex">
+              <Link to="/" className="flex items-center space-x-2">
+                <span className="text-xl font-bold">React Footgun Evals</span>
+              </Link>
+            </div>
+            <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
+              <nav className="flex items-center space-x-4">
+                <Link
+                  to="/"
+                  className="text-sm font-medium transition-colors hover:text-primary"
+                >
+                  Home
+                </Link>
+                <Link
+                  to="/"
+                  className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
+                >
+                  About
+                </Link>
+              </nav>
             </div>
           </div>
-        </nav>
+        </header>
 
-        {/* Page Content */}
-        <Outlet />
+        {/* Main Content */}
+        <main className="flex-1">
+          <Outlet />
+        </main>
+
+        {/* Footer */}
+        <footer className="border-t bg-background">
+          <div className="container flex flex-col items-center justify-between gap-4 py-10 md:h-24 md:flex-row md:py-0">
+            <div className="flex flex-col items-center gap-4 px-8 md:flex-row md:gap-2 md:px-0">
+              <p className="text-center text-sm leading-loose text-muted-foreground md:text-left">
+                &copy; {new Date().getFullYear()} React Footgun Evals. All
+                rights reserved.
+              </p>
+            </div>
+            <div className="flex items-center space-x-4">
+              <Link
+                to="/"
+                className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
+              >
+                Terms
+              </Link>
+              <Link
+                to="/"
+                className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
+              >
+                Privacy
+              </Link>
+            </div>
+          </div>
+        </footer>
       </div>
     </RootDocument>
   );
@@ -52,14 +85,19 @@ function RootComponent() {
 
 function RootDocument({ children }: { children: React.ReactNode }) {
   return (
-    <html>
+    <html lang="en" className="dark">
       <head>
         <Meta />
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>React Footgun Evals</title>
+        <meta
+          name="description"
+          content="Evaluations of programming prompts to help identify outdated or incorrect information"
+        />
       </head>
-      <body>
-        {children}
+      <body className="min-h-screen bg-background font-sans antialiased">
+        <ThemeProvider defaultTheme="dark">{children}</ThemeProvider>
         <ReactQueryDevtools />
         <TanStackRouterDevtools />
         <Scripts />
